@@ -1,13 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	
+	<!-- advice -->
+	<!-- <bean class="com.iu.transfer.CardCheck" id="cardCheck"></bean>
+	<bean class="com.iu.transfer.Bus"></bean>
+	<bean class="com.iu.transfer.Subway"></bean>
 	
+	<aop:config>
+		<aop:aspect id="cardAspect" ref="cardCheck">
+			<aop:pointcut expression="execution(* com.iu.transfer..Bus.*())" id="bus"/>
+			<aop:before method="cardIn" pointcut-ref="bus"/>
+			<aop:after-returning method="cardOut" pointcut-ref="bus"/>
+		</aop:aspect>
+		<aop:aspect id="cardAspect2" ref="cardCheck">
+			<aop:pointcut expression="execution(* com.iu.transfer.Subway.subway())" id="sub"/>
+			<aop:before method="cardIn" pointcut-ref="sub"/>
+			<aop:after-throwing method="cardOut" pointcut-ref="sub"/>
+		</aop:aspect>
+	</aop:config> -->
 	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
+	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+		<property name="username" value="${oracle.user}" />
+		<property name="password" value="${oracle.pw}" />
+		<property name="url" value="${oracle.url}" />
+		<property name="driverClassName" value="${oracle.driver}" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:/myBatis/mappers/**/*Mapper.xml" />
+		<property name="configLocation" value="classpath:/myBatis/config/myBatisConfig.xml"/>
+	</bean>
+	
+	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
+	</bean>
+	
+	<!--transaction  -->
+	<bean class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="txManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- point cut 설정 -->
+	<aop:config>
+		<aop:pointcut expression="execution(* com.iu..*Service.set*(..))" id="requiredTx"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="requiredTx"/>
+	</aop:config>
 	
 
 </beans>

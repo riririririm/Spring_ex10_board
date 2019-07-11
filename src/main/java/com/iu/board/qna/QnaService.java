@@ -40,6 +40,10 @@ public class QnaService implements BoardService {
 		System.out.println(realPath);
 		ArrayList<FileDTO> files = new ArrayList<FileDTO>();
 		
+		if(res>0) {
+			throw new Exception();
+		}
+		
 		for(MultipartFile f : multipartFiles) {
 			// 폼에서 파일첨부 안했을 때 에러 방지
 			if(f.getOriginalFilename().length()>0) {
@@ -75,7 +79,6 @@ public class QnaService implements BoardService {
 	@Override
 	public int setUpdate(BoardDTO boardDTO, List<MultipartFile> f1, HttpSession session) throws Exception {
 		int result= qnaDAO.setUpdate(boardDTO);
-		System.out.println("update : "+result);
 		String realPath = session.getServletContext().getRealPath("/resources/qna");
 		
 		ArrayList<FileDTO> files = new ArrayList<FileDTO>();
@@ -99,6 +102,7 @@ public class QnaService implements BoardService {
 	@Override
 	public BoardDTO getSelect(int num) throws Exception {
 		 BoardDTO boardDTO = qnaDAO.getSelect(num);
+		 
 		 QnaDTO qnaDTO = (QnaDTO)boardDTO;
 		 if(qnaDTO.getFiles().size()==1) {
 			 if(qnaDTO.getFiles().get(0).getFname()==null) {
