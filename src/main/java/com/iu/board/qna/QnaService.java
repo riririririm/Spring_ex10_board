@@ -16,7 +16,7 @@ import com.iu.file.FileDTO;
 import com.iu.util.FileSaver;
 import com.iu.util.PageMaker;
 
-@Service
+
 public class QnaService implements BoardService {
 
 	@Inject
