@@ -46,15 +46,15 @@
 		</interceptor>
 	</interceptors>
 	
-	<beans:bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceholderConfigurer">
-		<beans:property name="locations" value="classpath:properties/*.properties"></beans:property>
-	</beans:bean>
 
 	<context:component-scan base-package="com.iu.s10" />
 	<context:component-scan base-package="com.iu.member"/>
 	<context:component-scan base-package="com.iu.file" />
 	<context:component-scan base-package="com.iu.transfer"/>
 	<context:component-scan base-package="com.iu.common"/>
+	<context:component-scan base-package="com.iu.mall.product"/>
+	<context:component-scan base-package="com.iu.mall.options"/>
+	<context:component-scan base-package="com.iu.mall.thumbnail"/>
 	
 	<beans:import resource="classpath:/spring/*"/>
 	<!-- <beans:import resource="classpath:/spring/context-file.xml"/>
