@@ -1,38 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" id="propertyPlaceholderConfigurer">
-		<property name="locations" value="classpath:properties/*.properties"></property>
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+		id="propertyPlaceholderConfigurer">
+		<property name="locations"
+			value="classpath:properties/*.properties"></property>
 	</bean>
-	
-	<bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" id="dataSource">
+
+	<bean
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+		id="dataSource">
 		<property name="username" value="${oracle.user}" />
 		<property name="password" value="${oracle.pw}" />
 		<property name="url" value="${oracle.url}" />
 		<property name="driverClassName" value="${oracle.driver}" />
 	</bean>
-	
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactoryBean">
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="mapperLocations" value="classpath:/myBatis/mappers/**/*Mapper.xml" />
-		<property name="configLocation" value="classpath:/myBatis/config/myBatisConfig.xml"/>
+		<property name="mapperLocations"
+			value="classpath:/myBatis/mappers/**/*Mapper.xml" />
+		<property name="configLocation"
+			value="classpath:/myBatis/config/myBatisConfig.xml" />
 	</bean>
-	
-	<bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
-		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
+
+	<bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSession">
+		<constructor-arg name="sqlSessionFactory"
+			ref="sqlSessionFactoryBean"></constructor-arg>
 	</bean>
-	
+
+	<!-- transaction 관리자 설정 -->
+	<!-- <bean
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		id="txManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean> -->
+
+	<!-- transaction advice 설정 -->
+	<!-- <tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="Exception" />
+		</tx:attributes>
+	</tx:advice> -->
+
+	<!-- AOP PointCut 설정 -->
+	<!-- <aop:config>
+		<aop:pointcut id="requriedTx" expression="execution(* com.iu..*Service.set*(..))" />
+		<aop:advisor pointcut-ref="requriedTx" advice-ref="txAdvice" />
+	</aop:config> -->
+
 	<!-- 분할 된 request 합치는 객체 -->
-	<bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		<property name="defaultEncoding" value="UTF-8"/>
+	<bean
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
 		<!-- 파일 1개 당 사이즈. byte기반 (10MB) -->
 		<!-- <property name="maxUploadSizePerFile" value="10485760"/> -->
 		<!-- 전체 파일의 크기. (100MB) -->
 		<!-- <property name="maxUploadSize" value="1048576000" /> -->
-	</bean>	
+	</bean>
 	
+	<tx:annotation-driven/>
 
 </beans>

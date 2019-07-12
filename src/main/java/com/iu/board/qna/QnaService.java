@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.iu.board.BoardDTO;
@@ -26,6 +27,7 @@ public class QnaService implements BoardService {
 	@Inject
 	private FileSaver fileSaver;
 	
+	@Transactional
 	@Override
 	public int setWrite(BoardDTO boardDTO, List<MultipartFile> multipartFiles, HttpSession session) throws Exception {
 		
@@ -58,6 +60,7 @@ public class QnaService implements BoardService {
 		return res;
 	}
 
+	@Transactional
 	@Override
 	public int setDelete(int num, HttpSession session) throws Exception {
 		String realPath = session.getServletContext().getRealPath("/resources/qna");
