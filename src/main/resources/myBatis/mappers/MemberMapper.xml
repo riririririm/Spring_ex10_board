@@ -8,6 +8,10 @@
 	<sql id="colums">
 		id, pw, name, email, grade
 	</sql>
+	
+	<select id="getId" parameterType="MemberDTO" resultType="MemberDTO">
+		select id from member where id=#{id}
+	</select>
 
 	<insert id="setWrite" parameterType="com.iu.member.MemberDTO">
 		insert into member (

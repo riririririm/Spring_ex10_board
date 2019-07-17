@@ -26,40 +26,49 @@ public class ProductService {
 	private ThumbnailDAO thumbnailDAO;
 	@Inject
 	private FileSaver fileSaver;
-	
-	//list
-	public List<ProductVO> getList(PageMaker pageMaker) throws Exception {
-		pageMaker.setPerPage(9);
-		//startRow,
-		
-		//pageing
+
+	// list
+	public ProductVO getSelect(ProductVO productVO) throws Exception {
+		return productDAO.getSelect(productVO);
 	}
-	
-	//write
+
+	// list
+	public List<ProductVO> getList(PageMaker pageMaker) throws Exception {
+		// startRow,
+		pageMaker.setPerPage(9);
+		pageMaker.makeRow();
+
+		// paging
+		int totalCount = productDAO.getCount(pageMaker);
+		pageMaker.makePage(totalCount);
+		return productDAO.getList(pageMaker);
+	}
+
+	// write
 	public int setWrite(ProductVO productVO, List<MultipartFile> f1, HttpSession session) throws Exception {
-		//1. PID 생성
-		//현재시간을 밀리세컨즈로 변환
-		//F/T/B+현재시간
+		// 1. PID 생성
+		// 현재시간을 밀리세컨즈로 변환
+		// F/T/B+현재시간
 		Calendar ca = Calendar.getInstance();
-		long time = ca.getTimeInMillis(); //혹은  System.currentTimeMills();
-		
-		String pid = productVO.getCategory()+time;
-		
-		//2. 상품등록
+		long time = ca.getTimeInMillis(); // 혹은 System.currentTimeMills();
+
+		String pid = productVO.getCategory() + time;
+
+		// 2. 상품등록
 		productVO.setPid(pid);
 		int result = productDAO.setWrite(productVO);
-		
-		//3. 옵션등록
-		/*List<OptionsVO> options = productVO.getOptions();
-		for(OptionsVO option : options) {
-			result = optionsDAO.setWrite(option);
-		}*/
-		
-		//4. 파일 HDD에 저장
-		String realPath = session.getServletContext().getRealPath("/resources/mall/thumbnail");
-		System.out.println("realPath: "+realPath);
-		
-		for(MultipartFile file : f1) {
+
+		// 3. 옵션등록
+		/*
+		 * List<OptionsVO> options = productVO.getOptions(); for(OptionsVO option :
+		 * options) { result = optionsDAO.setWrite(option); }
+		 */
+
+		// 4. 파일 HDD에 저장
+		String realPath = session.getServletContext().getRealPath("/resources/mall");
+		System.out.println("realPath: " + realPath);
+
+		for (MultipartFile file : f1) {
 			String fname = fileSaver.saveFile3(realPath, file);
 			ThumbnailVO thumbnailVO = new ThumbnailVO();
 			thumbnailVO.setPid(productVO.getPid());
@@ -67,9 +76,9 @@ public class ProductService {
 			thumbnailVO.setOname(file.getOriginalFilename());
 			result = thumbnailDAO.setWrite(thumbnailVO);
 		}
-		
-		//5. 섬네일등록
-		
+
+		// 5. 섬네일등록
+
 		return 0;
 	}
 }

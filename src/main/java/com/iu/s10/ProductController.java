@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.iu.mall.product.ProductService;
 import com.iu.mall.product.ProductVO;
+import com.iu.util.PageMaker;
 
 @Controller
 @RequestMapping("/mall/")
@@ -31,7 +32,32 @@ public class ProductController {
 		ProductVO productVO = new ProductVO();
 		return productVO;
 	}
+
+	@RequestMapping(value = "productSelect", method=RequestMethod.GET)
+	public ModelAndView productSelect(ProductVO productVO) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		productVO = productService.getSelect(productVO);
+		if(mv!=null) {
+			mv.addObject("product",productVO);
+			mv.addObject("mall/productSelect");			
+		}else {
+			mv.addObject("message", "no product.");
+			mv.addObject("path","./productList");
+			mv.setViewName("common/messageMove");
+		}
+		
+		return mv;
+	}
 	
+	@RequestMapping(value = "productList", method=RequestMethod.GET)
+	public ModelAndView productList(PageMaker pageMaker) throws Exception{
+		ModelAndView mv = new ModelAndView();
+		List<ProductVO> list = productService.getList(pageMaker);
+		mv.addObject("productList", list);
+		mv.addObject("pager", pageMaker);
+		
+		return mv;
+	}
 	
 	@RequestMapping(value = "productWrite", method = RequestMethod.POST)
 	public void productWrite(ProductVO productVO, List<MultipartFile> f1, HttpSession session)throws Exception{

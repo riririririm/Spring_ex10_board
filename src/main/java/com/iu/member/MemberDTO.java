@@ -5,6 +5,7 @@ import com.iu.file.MemberFileDTO;
 public class MemberDTO {
 	private String id;
 	private String pw;
+	private String pw2;
 	private String name;
 	private String email;
 	private int grade;
@@ -47,6 +48,12 @@ public class MemberDTO {
 	}
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+	public String getPw2() {
+		return pw2;
+	}
+	public void setPw2(String pw2) {
+		this.pw2 = pw2;
 	}
 	
 	

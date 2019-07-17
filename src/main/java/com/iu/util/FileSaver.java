@@ -61,6 +61,7 @@ public class FileSaver {
 	
 	// 3. MultipartFile 클래스의 transferTo 메서드 사용
 	public String saveFile3(String realPath, MultipartFile multipartFile)throws Exception{
+		System.out.println(realPath);
 		File file = new File(realPath);
 		if(!file.exists()) {
 			file.mkdirs();

@@ -15,6 +15,7 @@ public class ProductVO {
 	private int amount;
 	private String reg_date;
 	private List<ThumbnailVO> nailVOs;
+	private List<OptionsVO> optionsVOs;
 	
 	public String getPid() {
 		return pid;
@@ -69,6 +70,12 @@ public class ProductVO {
 	}
 	public void setNailVOs(List<ThumbnailVO> nailVOs) {
 		this.nailVOs = nailVOs;
+	}
+	public List<OptionsVO> getOptionsVOs() {
+		return optionsVOs;
+	}
+	public void setOptionsVOs(List<OptionsVO> optionsVOs) {
+		this.optionsVOs = optionsVOs;
 	}
 	
 	

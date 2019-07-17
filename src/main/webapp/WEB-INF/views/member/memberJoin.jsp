@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,31 +15,39 @@
 	<div class="container">
 		<h1>Member Join Form</h1>
 		
-		<form action="./memberJoin" method="post" enctype="multipart/form-data">
+		<form:form action="./memberJoin" id="frm" commandName="memberDTO" enctype="multipart/form-data">
 		  <div class="form-group">
 		    <label for="id">ID:</label>
-		    <input type="text" class="form-control" id="id" name="id">
+		    <form:input class="form-control" path="id"/>
+		    <form:errors path="id"/>
 		  </div>
 		  <div class="form-group">
-		    <label for="password">PASSWORD:</label>
-		    <input type="password" class="form-control" id="pw" name="pw">
+		    <label for="pw">PASSWORD:</label>
+		    <form:password class="form-control" path="pw" />
+		    <form:errors path="pw"/>
+		  </div>
+		  <div class="form-group">
+		    <label for="pw2">PASSWORD CHECK:</label>
+		    <form:password class="form-control" path="pw2" />
+		    <form:errors path="pw2"/>
 		  </div>
 		  <div class="form-group">
 		    <label for="name">NAME:</label>
-		    <input type="text" class="form-control" id="name" name="name">
+		    <form:input class="form-control" path="name"/>
+		    <form:errors path="name"/>
 		  </div>
 		  <div class="form-group">
-		    <label for="name">EMAIL:</label>
-		    <input type="email" class="form-control" id="email" name="email">
+		    <label for="email">EMAIL:</label>
+		    <form:input class="form-control" path="email"/>
+		    <form:errors path="email"/>
 		  </div>
-		  
-		  
+
 		  <div class="form-group">
-		  	<input type="file" name="photo">
+		  	<input type="file" class="form-control" path="photo"/>
 		  </div>
 		  
-		  <button type="submit" class="btn btn-default">Join</button>
-		</form>
+		  <button class="btn btn-default">Join</button>
+		</form:form>
 		
 	</div>
 

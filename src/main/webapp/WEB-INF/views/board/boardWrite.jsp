@@ -1,69 +1,76 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <c:import url="../temp/boot.jsp" />
-<!-- include summernote css/js -->
-<c:import url="../temp/summernote.jsp"/>
+<c:import url="../temp/summernote.jsp" />
 </head>
 <body>
 	<div class="container">
 		<h1>${board} Write Form</h1>
-		<form id="frm" action="./${board}Write" method="post" enctype="multipart/form-data">
-		    
-		    <div class="form-group">
+		<!-- action과 post의 default는 해당 url과 post임 -->
+		<form:form commandName="boardDTO" id="frm" enctype="multipart/form-data">
+			<div class="form-group">
 		      <label for="writer">Writer:</label>
-		      <input type="text" class="form-control" id="writer" placeholder="Enter writer" name="writer">
+		      <form:input  class="form-control" path="writer"/>
+		      <form:errors path="writer"></form:errors>
 		    </div>
 		    
 		    <div class="form-group">
 		      <label for="title">Title:</label>
-		      <input type="text" class="form-control" id="title" placeholder="Enter title" name="title">
+		      <form:input placeholder="Enter title" class="form-control" path="title"/>
+		      <form:errors path="title"></form:errors>
 		    </div>
-		    
-		     <div class="form-group">
+			
+			<div class="form-group">
 		      <label for="contents">Contents:</label>
-		      <textarea class="form-control" rows="100" cols="" name="contents" id="contents"></textarea>
-		    </div>
-		    
-		    <div>
-		    	<input type="button" class="btn btn-info" id="add" value="ADD FILE">
+			<form:textarea cssClass="form-control" path="contents" id="contents"/>
+			<form:errors path="contents"></form:errors>
+			</div>
+			
+			 <div>
+		    	<input type="button"  class="btn btn-info" id="add" value="ADD FILE">
 		    	<div id="files"></div>
 		    </div>
 		    
-		    <input type="button" class="btn btn-default" value="submit" id="submitBtn">
-		  </form>
+		    <input type="button" id="submitBtn" class="btn btn-default" value="Write">
+		    
+		</form:form>
+		
 	
 	</div>
 	
-	<script type="text/javascript" src="../resources/js/summernote.js"></script>
+	<script type="text/javascript" src="../resources/js/summernote.js" ></script>
 	<script type="text/javascript">
+		
+		
+		
+		
+		
+		
+		var count=0;
 	
-		var count = 0;
-
-		$("#add")
-				.click(
-						function() {
-							if (count < 5) {
-								var result = '<div class="input-group col-xs-3"><input type="file" name="f1" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-remove del"></i></span> </div>';
-								$("#files").append(result);
-								count++;
-							} else {
-								alert("첨부파일은 최대 5개만 가능합니다.");
-							}
-						});
-
+		$("#add").click(function() {
+			if(count<5){
+				var result ='<div class="input-group col-xs-3"><input type="file" name="f1" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-remove del"></i></span> </div>';
+				$("#files").append(result);
+				count++;
+			}else {
+				alert("첨부파일은 최대 5개만 가능합니다.");
+			}
+		});
+		
 		$("#files").on("click", ".del", function() {
 			$(this).parent().parent().remove();
 			//$(this).remove();
 			count--;
 		});
+	
 	</script>
 	
 

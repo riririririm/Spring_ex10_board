@@ -12,6 +12,10 @@
 				$("#frm").submit();
 			}
 		});
+		
+		$("#summernote2").summernote({
+			toolbar:[]
+		});
 		$('#contents').summernote({
 			callbacks:{
 				onImageUpload: function(files){

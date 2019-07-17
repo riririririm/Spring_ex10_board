@@ -11,18 +11,28 @@ import com.iu.util.PageMaker;
 
 @Repository
 public class ProductDAO {
-	
+
 	@Inject
 	private SqlSession sqlSession;
-	private static final String NAMESPACE="ProductMapper.";
-	
-	//list
-	public List<ProductVO> getList(PageMaker pageMaker) throws Exception {
-		return sqlSession.selectList(NAMESPACE+"getList",pageMaker);
+	private static final String NAMESPACE = "ProductMapper.";
+
+	// select
+	public ProductVO getSelect(ProductVO productVO) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + "getSelect", productVO);
 	}
-	
-	//write
+
+	// count
+	public int getCount(PageMaker pageMaker) throws Exception {
+		return sqlSession.selectOne(NAMESPACE + "getCount", pageMaker);
+	}
+
+	// list
+	public List<ProductVO> getList(PageMaker pageMaker) throws Exception {
+		return sqlSession.selectList(NAMESPACE + "getList", pageMaker);
+	}
+
+	// write
 	public int setWrite(ProductVO productVO) throws Exception {
-		return sqlSession.insert(NAMESPACE+"setWrite",productVO);
+		return sqlSession.insert(NAMESPACE + "setWrite", productVO);
 	}
 }
