@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.iu.member.MemberDTO;
 import com.iu.member.MemberService;
 import com.iu.util.PageMaker;
-import com.iu.validator.MemberValidate;
+
 
 @Controller
 @RequestMapping("/member/")
@@ -26,8 +27,7 @@ public class MemberController {
 
 	@Inject
 	private MemberService memberService;
-	@Inject
-	private MemberValidate memberValidate;
+
 
 	// memberAdmin //delete
 	@RequestMapping(value = "memberAdmin", method = RequestMethod.POST)
@@ -64,11 +64,11 @@ public class MemberController {
 
 	// 회원가입 처리
 	@RequestMapping(value = "memberJoin", method = RequestMethod.POST)
-	public ModelAndView setWrite(MemberDTO memberDTO, MultipartFile photo, HttpSession session,BindingResult bindingResult) throws Exception {
+	public ModelAndView setWrite(@Valid MemberDTO memberDTO,BindingResult bindingResult, MultipartFile photo, HttpSession session) throws Exception {
 		ModelAndView mv = new ModelAndView();
-		
+		System.out.println("controller");
 		//검증
-		memberValidate.validate(memberDTO, bindingResult);
+		//memberValidate.validate(memberDTO, bindingResult);
 		
 		if(bindingResult.hasErrors()) {
 			mv.setViewName("member/memberJoin");
