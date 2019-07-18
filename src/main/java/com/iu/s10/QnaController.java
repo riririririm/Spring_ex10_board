@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -140,6 +142,17 @@ public class QnaController {
 		// mv.addObject("board", "qna");
 		mv.addObject("pager", pageMaker);
 		mv.setViewName("board/boardList");
+		return mv;
+	}
+	
+	@ExceptionHandler(NumberFormatException.class)
+	public void getException() {
+		
+	}
+	@ExceptionHandler(NullPointerException.class)
+	public ModelAndView getNull() {
+		ModelAndView mv  = new ModelAndView();
+		mv.setViewName("error/error404");
 		return mv;
 	}
 

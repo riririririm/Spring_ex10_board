@@ -11,7 +11,7 @@
 
 
 
-<a href="./qna/qnaList">Qna List</a>
+<a href="./qna/qnaList" class="btn btn-danger">Qna List</a>
 
 <c:choose>
 	<c:when test="${not empty member}">

@@ -8,7 +8,7 @@ import com.sun.istack.internal.NotNull;
 
 public class MemberDTO {
 	@NotNull
-	@NotEmpty
+	@Size(min=6, max=12) // Size.memberDTO.id
 	private String id;
 	@Size(min=6, max=12)
 	private String pw;
