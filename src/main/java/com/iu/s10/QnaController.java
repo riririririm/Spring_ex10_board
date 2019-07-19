@@ -142,6 +142,9 @@ public class QnaController {
 		// mv.addObject("board", "qna");
 		mv.addObject("pager", pageMaker);
 		mv.setViewName("board/boardList");
+		if(lists.size()<0) {
+			
+		}
 		return mv;
 	}
 	
